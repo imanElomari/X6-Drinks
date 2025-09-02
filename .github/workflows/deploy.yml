@@ -1,9 +1,9 @@
-name:  Deploy Vite React App via FTP
+name: Deploy Vite React App via FTP
 
 on:
   push:
     branches:
-      - main   # deploy when pushing to main
+      - main # deploy when pushing to main
 
 jobs:
   build-and-deploy:
@@ -37,3 +37,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: dist/
           server-dir: /home/atlafapt/xdrinks.com/
+          port: 21
