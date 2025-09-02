@@ -8,7 +8,6 @@ A modern web project for the X6 Energy Drink brand.
 - **/src**: Source files, including main entry, additional styles
 - **/styles**: Global and utility CSS (Tailwind CSS)
 - **index.html**: Main HTML entry for Vite/React
-- **README.md**: Project documentation
 
 ## Main Technologies
 
