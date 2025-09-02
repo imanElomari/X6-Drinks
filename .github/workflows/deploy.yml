@@ -1,33 +1,39 @@
-name:  Deploy React App to cPanel
+name: 🚀 Deploy React App via FTP
 
 on:
   push:
     branches:
-      - main
+      - main   # deploy only when pushing to main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Checkout repo
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
+      # Step 2: Setup Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: "22"   # match your project version
 
+      # Step 3: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci || npm install
 
+      # Step 4: Build React app (Vite outputs to dist/)
       - name: Build React app
         run: npm run build
 
-      - name: Deploy build folder to cPanel via FTP
+      # Step 5: Deploy dist/ folder via FTP
+      - name: Upload dist via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: dist/
-          server-dir: public_html/
+          server-dir: /home/atlafapt/xdrinks.com/
