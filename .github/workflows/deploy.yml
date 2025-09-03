@@ -1,4 +1,4 @@
-name: Deploy Vite React App via FTP
+name: Deploy App via FTP
 
 on:
   push:
