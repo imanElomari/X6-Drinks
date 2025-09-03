@@ -1,16 +1,65 @@
 "use client"
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 function App() {
+  const { t, i18n } = useTranslation();
+
+  // Simple language switcher
+  const changeLang = (lng: string) => i18n.changeLanguage(lng);
+
+  // Set direction based on language
+  const dir = i18n.language === "ar" ? "rtl" : "ltr";
+
+  // Ensure <html> tag direction is updated
+  useEffect(() => {
+    document.documentElement.dir = dir;
+  }, [dir]);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-red-50 overflow-hidden relative flex flex-col">
+    <div
+      dir={dir}
+      className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-red-50 overflow-hidden relative flex flex-col"
+    >
       <header className="relative z-10 border-b border-slate-200 bg-white/70 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div
+          className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center"
+          dir="ltr"
+        >
+          {/* Language Switcher */}
+          <div className="flex items-center gap-1 bg-white/70 border border-slate-200 rounded-full px-2 py-1 shadow-sm backdrop-blur-sm">
+            {[
+              { lng: "en", label: "EN", flag: "🇬🇧" },
+              { lng: "es", label: "ES", flag: "🇪🇸" },
+              { lng: "ar", label: "AR", flag: "🇸🇦" },
+            ].map(({ lng, label, flag }) => (
+              <button
+                key={lng}
+                onClick={() => changeLang(lng)}
+                className={
+                  "flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-200 outline-none focus:ring-2 focus:ring-blue-400 " +
+                  (i18n.language === lng
+                    ? "bg-gradient-to-r from-blue-600 to-red-600 text-white shadow font-bold"
+                    : "text-slate-700 hover:bg-slate-100")
+                }
+                aria-current={i18n.language === lng ? "true" : undefined}
+              >
+                <span className="text-base">{flag}</span>
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
           <div className="text-right">
             <a
               href="mailto:info@atlasimex.es"
               className="inline-flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-all duration-300 text-sm font-semibold bg-white/50 px-4 py-2 rounded-full border border-slate-200/50 hover:border-blue-200 hover:bg-blue-50/50 backdrop-blur-sm shadow-sm hover:shadow-md"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -55,10 +104,15 @@ function App() {
                 {/* Coming Soon Badge */}
                 <div className="flex justify-center lg:justify-start mb-4">
                   <span className="inline-block rounded-full bg-gradient-to-r from-blue-600 to-red-600 px-4 py-1 text-xs font-bold uppercase tracking-widest text-white shadow-lg animate-pulse">
-                    Coming Soon
+                    {t("comingSoon")}
                   </span>
                 </div>
-                <div className="text-8xl md:text-9xl font-black tracking-tighter relative">
+                <div
+                  className={
+                    "text-8xl md:text-9xl font-black tracking-tighter relative " +
+                    (i18n.language === "ar" ? "text-right" : "text-left")
+                  }
+                >
                   <span
                     className="relative inline-block"
                     style={{
@@ -79,21 +133,30 @@ function App() {
                     X6
                   </span>
                 </div>
-                <div className="text-2xl md:text-3xl font-bold text-slate-700 tracking-widest uppercase -mt-4">
-                  Energy Drink
+                <div
+                  className={
+                    "text-2xl md:text-3xl font-bold text-slate-700 tracking-widest uppercase -mt-4 " +
+                    (i18n.language === "ar" ? "text-right" : "text-left")
+                  }
+                >
+                  {t("energyDrink")}
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div
+                className={
+                  "space-y-4 " +
+                  (i18n.language === "ar" ? "text-right" : "text-left")
+                }
+              >
                 <h1 className="text-4xl md:text-6xl font-bold text-slate-800 text-balance leading-tight">
-                  GET READY FOR
+                  {t("getReadyFor")}
                   <span className="block bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent">
-                    PURE ENERGY
+                    {t("pureEnergy")}
                   </span>
                 </h1>
                 <p className="text-xl text-slate-600 text-pretty max-w-lg">
-                  Something revolutionary is about to drop. The most intense energy experience you've ever felt is on
-                  its way. Get ready to feel the power of X6!
+                  {t("description")}
                 </p>
               </div>
             </div>
