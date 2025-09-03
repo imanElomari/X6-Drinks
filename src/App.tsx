@@ -52,6 +52,12 @@ function App() {
           <div className="text-center lg:text-left space-y-12 pt-8">
             <div className="space-y-6">
               <div>
+                {/* Coming Soon Badge */}
+                <div className="flex justify-center lg:justify-start mb-4">
+                  <span className="inline-block rounded-full bg-gradient-to-r from-blue-600 to-red-600 px-4 py-1 text-xs font-bold uppercase tracking-widest text-white shadow-lg animate-pulse">
+                    Coming Soon
+                  </span>
+                </div>
                 <div className="text-8xl md:text-9xl font-black tracking-tighter relative">
                   <span
                     className="relative inline-block"
