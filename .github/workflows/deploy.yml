@@ -42,12 +42,13 @@ jobs:
       # Step 7: Upload backup to server backups/ without overwriting
       - name: Upload backup via lftp
         run: |
+          export BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
+            set ssl:verify-certificate no
             mkdir -p backups
             put $BACKUP_FILE -O backups
             quit
           EOF
-
 
       # Step 8: Deploy new dist/ to root folder
       - name: Deploy new dist/ to root
