@@ -32,14 +32,13 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
-      # Step 6: Backup current server x6drinks folder
       - name: Backup current server x6drinks
         run: |
           mkdir -p backup_tmp
-          # Download current server files excluding 'backups'
+          # Download everything except the 'backups' folder
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} -e "
             set ssl:verify-certificate no;
-            mirror --verbose --exclude '^backups$' ./ ./backup_tmp;
+            mirror --verbose --exclude-glob backups ./ ./backup_tmp;
             quit
           "
           # Compress downloaded folder
