@@ -37,8 +37,9 @@ jobs:
         run: |
           mkdir -p backup_tmp
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} -e "
-              mirror --verbose --exclude '^backups$' ./ ./backup_tmp;
-              quit
+            set ssl:verify-certificate no;
+            mirror --verbose --exclude '^backups$' ./ ./backup_tmp;
+            quit
           "
           BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
           tar -czf $BACKUP_FILE -C backup_tmp .
