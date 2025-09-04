@@ -1,4 +1,4 @@
-name: Deploy App via FTP
+name: Deploy React App via FTP
 
 on:
   push:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
+      # Step 1: Checkout repo
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -24,20 +24,19 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
-      # Step 4: Build React app
+      # Step 4: Build React app (Vite → dist/)
       - name: Build app
         run: npm run build
 
-      # Step 5: Create backup of deployed files (dist, public, index.html)
-      - name: Create backup of live site
+      # Step 5: Create backup of dist/
+      - name: Create backup of dist/
         run: |
           BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
-          # Only include the files that are actually deployed
-          tar -czf $BACKUP_FILE ./dist ./public ./index.html
+          tar -czf $BACKUP_FILE ./dist
           mkdir -p backup_upload
           mv $BACKUP_FILE backup_upload/
 
-      # Step 6: Upload backup to server backups folder
+      # Step 6: Upload backup to server backups/
       - name: Upload backup to server backups/
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
