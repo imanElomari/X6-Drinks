@@ -49,10 +49,9 @@ jobs:
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
             set ssl:verify-certificate no
             mkdir backups || true
-            put $BACKUP_FILE -O backups
+            put $BACKUP_FILE -o backups/$(basename $BACKUP_FILE)
             quit
           EOF
-
 
       # Step 8: Deploy new dist/ to root folder
       - name: Deploy new dist/ to root
