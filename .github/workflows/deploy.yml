@@ -57,7 +57,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: backup_upload/
-          server-dir: ./backups
+          server-dir: ./backups/
           port: 21
 
       # Step 8: Deploy new dist/ to root folder
