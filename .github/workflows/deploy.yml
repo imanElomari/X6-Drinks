@@ -28,12 +28,12 @@ jobs:
       - name: Build app
         run: npm run build
 
-      # Step 5: Create a local backup of current build
-      - name: Create local backup
+      # Step 5: Create backup of deployed files (dist, public, index.html)
+      - name: Create backup of live site
         run: |
           BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
-          # Compress current app files (exclude backups folder)
-          tar --exclude='./backups' -czf $BACKUP_FILE ./dist ./src package.json package-lock.json
+          # Only include the files that are actually deployed
+          tar -czf $BACKUP_FILE ./dist ./public ./index.html
           mkdir -p backup_upload
           mv $BACKUP_FILE backup_upload/
 
