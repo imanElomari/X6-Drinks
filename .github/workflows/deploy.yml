@@ -28,30 +28,16 @@ jobs:
       - name: Build app
         run: npm run build
 
-      # Step 5: Install lftp for FTP operations
-      - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
-
-      # Step 6: Backup current server x6drinks folder (excluding backups)
-      - name: Backup current server x6drinks
+      # Step 5: Create a local backup of current build
+      - name: Create local backup
         run: |
-          mkdir -p backup_tmp
-          # Mirror the server folder excluding the backups folder
-          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} -e "
-            set ssl:verify-certificate no;
-            mirror --verbose --exclude-glob backups ./ ./backup_tmp;
-            quit
-          "
-          # Compress only the contents of backup_tmp
           BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
-          cd backup_tmp
-          tar -czf ../$BACKUP_FILE *
-          cd ..
-          # Prepare folder for FTP upload
+          # Compress current app files (exclude backups folder)
+          tar --exclude='./backups' -czf $BACKUP_FILE ./dist ./src package.json package-lock.json
           mkdir -p backup_upload
           mv $BACKUP_FILE backup_upload/
 
-      # Step 7: Upload backup archive to server backups folder
+      # Step 6: Upload backup to server backups folder
       - name: Upload backup to server backups/
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -62,8 +48,8 @@ jobs:
           server-dir: ./backups/
           port: 21
 
-      # Step 8: Deploy new dist/ to root folder
-      - name: Upload dist/ to root
+      # Step 7: Deploy new dist/ to root folder
+      - name: Deploy new dist/ to root
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
