@@ -51,7 +51,7 @@ function App() {
           </div>
           <div className="text-right">
             <a
-              href="mailto:info@x6drinks.com"
+              href="mailto:info@atlasimex.es"
               className="inline-flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-all duration-300 text-sm font-semibold bg-white/50 px-4 py-2 rounded-full border border-slate-200/50 hover:border-blue-200 hover:bg-blue-50/50 backdrop-blur-sm shadow-sm hover:shadow-md"
             >
               <svg
@@ -67,7 +67,7 @@ function App() {
                   d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                 />
               </svg>
-              info@x6drinks.com
+              info@atlasimex.es
             </a>
           </div>
         </div>
