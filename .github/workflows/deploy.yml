@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
-      # Step 4: Build React app (Vite → dist/)
+      # Step 4: Build React app
       - name: Build app
         run: npm run build
 
@@ -33,21 +33,22 @@ jobs:
         run: |
           BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
           tar -czf $BACKUP_FILE ./dist
-          mkdir -p backup_upload
-          mv $BACKUP_FILE backup_upload/
+          echo "Backup file created: $BACKUP_FILE"
 
-      # Step 6: Upload backup to server backups/
-      - name: Upload backup to server backups/
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: backup_upload/
-          server-dir: ./backups/
-          port: 21
+      # Step 6: Install lftp for backup upload
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
 
-      # Step 7: Deploy new dist/ to root folder
+      # Step 7: Upload backup to server backups/ without overwriting
+      - name: Upload backup via lftp
+        run: |
+          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
+            mkdir -p backups
+            put $BACKUP_FILE -o backups/$BACKUP_FILE
+            quit
+            EOF
+
+      # Step 8: Deploy new dist/ to root folder
       - name: Deploy new dist/ to root
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
