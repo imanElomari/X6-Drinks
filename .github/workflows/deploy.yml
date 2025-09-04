@@ -33,16 +33,18 @@ jobs:
         run: |
           BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
           tar -czf $BACKUP_FILE ./dist
-          echo "Backup file created: $BACKUP_FILE"
+          mkdir -p backup_upload
+          mv $BACKUP_FILE backup_upload/
+          echo "Backup file created: backup_upload/$BACKUP_FILE"
 
       # Step 6: Install lftp for backup upload
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
-      # Step 7: Upload backup to server backups/ without overwriting
+      # Step 7: Upload backup via lftp without overwriting existing backups
       - name: Upload backup via lftp
         run: |
-          export BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
+          BACKUP_FILE=$(ls backup_upload/*.tar.gz)
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
             set ssl:verify-certificate no
             mkdir -p backups
