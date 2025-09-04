@@ -32,26 +32,31 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
-      # Step 6: Download current server files (excluding backups) and compress
+      # Step 6: Backup current server x6drinks folder
       - name: Backup current server x6drinks
         run: |
           mkdir -p backup_tmp
+          # Download current server files excluding 'backups'
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} -e "
             set ssl:verify-certificate no;
             mirror --verbose --exclude '^backups$' ./ ./backup_tmp;
             quit
           "
+          # Compress downloaded folder
           BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
           tar -czf $BACKUP_FILE -C backup_tmp .
-          
-      # Step 7: Upload the backup to server backups folder
-      - name: Upload backup to backups folder
+          # Prepare folder for FTP-Deploy-Action
+          mkdir -p backup_upload
+          mv $BACKUP_FILE backup_upload/
+
+      # Step 7: Upload backup to server backups folder
+      - name: Upload backup via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: .
+          local-dir: backup_upload/
           server-dir: ./backups
           port: 21
 
