@@ -1,6 +1,6 @@
 # X6-Drinks
 
-A modern web project for the X6 Energy Drink brand.
+A modern web project for the X6 Energy Drink.
 
 ## Codebase Overview
 

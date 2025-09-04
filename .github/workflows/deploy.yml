@@ -3,14 +3,14 @@ name: Deploy App via FTP
 on:
   push:
     branches:
-      - main # deploy when pushing to main
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repo
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -24,12 +24,38 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
-      # Step 4: Build React app (Vite → dist/)
+      # Step 4: Build React app
       - name: Build app
         run: npm run build
 
-      # Step 5: Deploy via FTP
-      - name: Upload dist/ via FTP
+      # Step 5: Install lftp for FTP operations
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      # Step 6: Download current server files (excluding backups) and compress
+      - name: Backup current server x6drinks
+        run: |
+          mkdir -p backup_tmp
+          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} -e "
+            mirror --verbose --exclude-backups ./ ./backup_tmp;
+            quit
+          "
+          BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
+          tar -czf $BACKUP_FILE -C backup_tmp .
+          
+      # Step 7: Upload the backup to server backups folder
+      - name: Upload backup to backups folder
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: .
+          server-dir: ./backups
+          port: 21
+
+      # Step 8: Deploy new dist/ to root folder
+      - name: Upload dist/ to root
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
