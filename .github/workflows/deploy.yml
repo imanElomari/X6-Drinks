@@ -42,9 +42,9 @@ jobs:
             mirror --verbose --exclude-glob backups ./ ./backup_tmp;
             quit
           "
-          # Compress the folder into a timestamped .tar.gz
+          # Compress the folder into a timestamped .tar.gz, EXCLUDING backup_tmp/backups
           BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
-          tar -czf $BACKUP_FILE -C backup_tmp .
+          tar --exclude='./backup_tmp/backups' -czf $BACKUP_FILE -C backup_tmp .
           # Prepare folder for FTP upload
           mkdir -p backup_upload
           mv $BACKUP_FILE backup_upload/
