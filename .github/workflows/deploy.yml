@@ -36,15 +36,17 @@ jobs:
       - name: Backup current server x6drinks
         run: |
           mkdir -p backup_tmp
-          # Mirror server files excluding 'backups' folder
+          # Mirror the server folder excluding the backups folder
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} -e "
             set ssl:verify-certificate no;
             mirror --verbose --exclude-glob backups ./ ./backup_tmp;
             quit
           "
-          # Compress the folder into a timestamped .tar.gz, EXCLUDING backup_tmp/backups
+          # Compress only the contents of backup_tmp
           BACKUP_FILE="x6drinks-$(date +'%Y%m%d-%H%M%S').tar.gz"
-          tar --exclude='./backup_tmp/backups' -czf $BACKUP_FILE -C backup_tmp .
+          cd backup_tmp
+          tar -czf ../$BACKUP_FILE *
+          cd ..
           # Prepare folder for FTP upload
           mkdir -p backup_upload
           mv $BACKUP_FILE backup_upload/
