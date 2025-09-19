@@ -97,6 +97,8 @@ export function ThreeDView() {
                 target={[0, 1, 0]} // aim at can’s center
                 enablePan={false}
                 enableZoom={true}
+                autoRotate={true}
+                autoRotateSpeed={1.9} 
                 minDistance={3}
                 maxDistance={10}
               />

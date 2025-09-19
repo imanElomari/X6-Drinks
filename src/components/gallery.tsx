@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export function Gallery() {
   const images = [
@@ -42,9 +43,9 @@ export function Gallery() {
             <div className="w-16 h-1 bg-blue-500 rounded mb-6" />
             <p className="text-lg mb-6 leading-relaxed text-gray-700">
               Embark on a visual journey with{" "}
-              <span className="font-bold text-red-600">X6 Drinks</span>!
-              Explore our exclusive gallery and discover the bold design,
-              refreshing spirit, and energetic vibe of every product.
+              <span className="font-bold text-red-600">X6 Drinks</span>! Explore
+              our exclusive gallery and discover the bold design, refreshing
+              spirit, and energetic vibe of every product.
               <span className="text-blue-500 font-semibold">
                 Your next adventure starts here!
               </span>
@@ -57,6 +58,27 @@ export function Gallery() {
               className="relative flex items-center justify-center w-full max-w-[400px]"
               style={{ height: "min(80vw, 400px)" }}
             >
+              {/* Left Chevron Button */}
+              <button
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full shadow p-1 text-blue-700 hover:bg-blue-100 focus:outline-none"
+                onClick={handlePrev}
+                aria-label="Previous"
+                style={{ pointerEvents: "auto" }}
+                type="button"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              {/* Right Chevron Button */}
+              <button
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white rounded-full shadow p-1 text-blue-700 hover:bg-blue-100 focus:outline-none"
+                onClick={handleNext}
+                aria-label="Next"
+                style={{ pointerEvents: "auto" }}
+                type="button"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+
               {/* 3D stack */}
               {images.map((img, idx) => {
                 const isTop = idx === currentIdx;
@@ -138,19 +160,20 @@ export function Gallery() {
             </div>
 
             {/* Instruction text below deck */}
-          <div className="mt-8 flex justify-center">
-            <div
-              className="text-[#1728A2] text-[10px] md:text-xs font-normal text-center tracking-tight"
-              style={{
-                fontFamily: "Montserrat, Arial, sans-serif",
-                letterSpacing: "0.01em",
-              }}
-            >
-              Discover more: <span className="font-semibold">Swipe, drag,</span>{" "}
-              or <span className="font-semibold">tap the arrows</span> to browse
-              our gallery!
+            <div className="mt-8 flex justify-center">
+              <div
+                className="text-[#1728A2] text-[10px] md:text-xs font-normal text-center tracking-tight"
+                style={{
+                  fontFamily: "Montserrat, Arial, sans-serif",
+                  letterSpacing: "0.01em",
+                }}
+              >
+                Discover more:{" "}
+                <span className="font-semibold">Swipe, drag,</span> or{" "}
+                <span className="font-semibold">tap the arrows</span> to browse
+                our gallery!
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </div>
