@@ -31,9 +31,35 @@ export function ThreeDView() {
   return (
     <section id="products" className="py-20 px-4">
       <div className="container mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-4">3D View</h2>
-        </div>
+        <h2 className="text-5xl font-extrabold text-blue-700 dark:text-white mb-4 leading-tight flex items-center gap-3">
+          <span>3D View</span>
+          <span className="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full border border-blue-300 animate-pulse">
+            Interactive
+          </span>
+        </h2>
+        <div className="w-16 h-1 bg-blue-500 rounded mb-6" />
+        <p className="text-lg mb-2 leading-relaxed text-gray-700 dark:text-gray-300">
+          Explore our product in 3D! Rotate, zoom, and inspect every detail for
+          a closer look.
+        </p>
+        <p className="text-sm text-blue-600 dark:text-blue-300 mb-6 flex items-center gap-2">
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            viewBox="0 0 20 20"
+            className="animate-bounce"
+          >
+            <circle cx="10" cy="10" r="9" stroke="#2563eb" strokeWidth="2" />
+            <path
+              d="M10 6v8M6 10h8"
+              stroke="#2563eb"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+          Click and drag to interact with the 3D model
+        </p>
         <div className="flex justify-center items-center">
           <div className="w-full max-w-2xl h-[550px] rounded-2xl shadow-lg flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-100">
             <Canvas camera={{ position: [0, 1.2, 6], fov: 40 }}>

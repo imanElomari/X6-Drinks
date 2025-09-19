@@ -8,9 +8,11 @@ export function CTA() {
         <div className="lg:flex lg:items-start">
           {/* Contact Info */}
           <div className="lg:w-1/2 mb-12 lg:mb-0">
-            <h2 className="text-4xl font-extrabold text-blue-700 dark:text-white mb-8 leading-tight">
-              Let's get in touch
-            </h2>
+            <h2 className="text-5xl font-extrabold text-blue-700 dark:text-white mb-4 leading-tight">
+                Let's get in touch
+              </h2>
+              <div className="w-16 h-1 bg-blue-500 rounded mb-6" />
+              
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 flex flex-col gap-6 max-w-md">
               {/* Phone */}
               <div className="flex items-center gap-4">

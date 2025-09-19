@@ -7,6 +7,7 @@ import { Footer } from "./components/footer";
 import { ThreeDView } from "./components/3D-view";
 import { Gallery } from "./components/gallery";
 
+
 function App() {
   return (
     <ThemeProvider>
